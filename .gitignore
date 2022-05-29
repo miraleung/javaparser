@@ -26,3 +26,33 @@ build-*
 build
 out
 .java-version
+
+
+bazel-*
+.gradle/
+target/
+
+# IDE
+.idea
+.ijwb
+
+# Vim.
+*.sw*
+*.vim
+
+# Vscode Settings
+.vscode/settings.json
+
+# Joern generated files
+.bsp/
+*defaultContentRootJars*
+joern-cli.zip
+joern-cli/project/*
+joern-cli/workspace/*
+joern-cli/frontends/kotlin2cpg/cpg*.bin*
+*.fuse_hidden*
+out/*
+orig_workspace/*
+workspace/*
+
+
