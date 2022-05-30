@@ -127,7 +127,6 @@ public class CompilationUnitContext extends AbstractJavaParserContext<Compilatio
 
     @Override
     public SymbolReference<ResolvedTypeDeclaration> solveType(String name) {
-
         if (wrappedNode.getTypes() != null) {
             // Look for types in this compilation unit. For instance, if the given name is "A", there may be a class or
             // interface in this compilation unit called "A".
@@ -193,6 +192,11 @@ public class CompilationUnitContext extends AbstractJavaParserContext<Compilatio
                     if (ref != null && ref.isSolved()) {
                         return SymbolReference.adapt(ref, ResolvedTypeDeclaration.class);
                     }
+                    // Second try with just the type name.
+                    ref = typeSolver.tryToSolveType(name);
+                    if (ref != null && ref.isSolved()) {
+                        return SymbolReference.adapt(ref, ResolvedTypeDeclaration.class);
+                    }
                 }
             }
         }
@@ -201,6 +205,11 @@ public class CompilationUnitContext extends AbstractJavaParserContext<Compilatio
         if (this.wrappedNode.getPackageDeclaration().isPresent()) {
             String qName = this.wrappedNode.getPackageDeclaration().get().getName().toString() + "." + name;
             SymbolReference<ResolvedReferenceTypeDeclaration> ref = typeSolver.tryToSolveType(qName);
+            if (ref != null && ref.isSolved()) {
+                return SymbolReference.adapt(ref, ResolvedTypeDeclaration.class);
+            }
+            // Second try with just the type name.
+            ref = typeSolver.tryToSolveType(name);
             if (ref != null && ref.isSolved()) {
                 return SymbolReference.adapt(ref, ResolvedTypeDeclaration.class);
             }

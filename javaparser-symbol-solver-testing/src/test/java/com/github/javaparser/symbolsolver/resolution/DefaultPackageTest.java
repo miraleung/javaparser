@@ -165,26 +165,20 @@ class DefaultPackageTest {
 
     @Test
     void aClassInDefaultPackageCanBeAccessedFromOutsideTheDefaultPackageImportingIt() {
-        assertThrows(UnsolvedSymbolException.class, () -> {
-            String code = "package myPackage; import B; class A extends B {}";
+        String code = "package myPackage; import B; class A extends B {}";
         MemoryTypeSolver memoryTypeSolver = new MemoryTypeSolver();
         memoryTypeSolver.addDeclaration("B", new MyClassDeclaration("B"));
         ClassOrInterfaceType jpType = parse(code).getClassByName("A").get().getExtendedTypes(0);
         ResolvedType resolvedType = JavaParserFacade.get(memoryTypeSolver).convertToUsage(jpType);
         assertEquals("B", resolvedType.asReferenceType().getQualifiedName());
-    });
-                
-                }
+    }
 
     @Test
     void aClassInDefaultPackageCanBeAccessedFromOutsideTheDefaultPackageWithoutImportingIt() {
-        assertThrows(UnsolvedSymbolException.class, () -> {
-            String code = "package myPackage; class A extends B {}";
+        String code = "package myPackage; class A extends B {}";
         MemoryTypeSolver memoryTypeSolver = new MemoryTypeSolver();
         memoryTypeSolver.addDeclaration("B", new MyClassDeclaration("B"));
         ResolvedType resolvedType = JavaParserFacade.get(memoryTypeSolver).convertToUsage(parse(code).getClassByName("A").get().getExtendedTypes(0));
         assertEquals("B", resolvedType.asReferenceType().getQualifiedName());
-    });
-                
-        }
+    }
 }
