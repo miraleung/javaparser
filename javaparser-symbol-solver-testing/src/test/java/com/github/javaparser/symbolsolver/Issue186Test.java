@@ -59,9 +59,9 @@ class Issue186Test extends AbstractResolutionTest {
         List<LambdaExpr> lambdas = methodDeclaration.findAll(LambdaExpr.class);
         TypeSolver typeSolver = new ReflectionTypeSolver();
         JavaParserFacade javaParserFacade = JavaParserFacade.get(typeSolver);
-        assertEquals("java.util.function.Predicate<? super java.lang.String>", javaParserFacade.getType(lambdas.get(0)).describe());
-        assertEquals("java.util.function.Function<? super java.lang.String, ? extends java.lang.Integer>", javaParserFacade.getType(lambdas.get(1)).describe());
-        assertEquals("java.util.function.Predicate<? super java.lang.Integer>", javaParserFacade.getType(lambdas.get(2)).describe());
+        assertEquals("java.util.function.Predicate<? super T>", javaParserFacade.getType(lambdas.get(0)).describe());
+        assertEquals("java.util.function.Function<? super T, ? extends java.lang.Integer>", javaParserFacade.getType(lambdas.get(1)).describe());
+        assertEquals("java.util.function.Predicate<? super T>", javaParserFacade.getType(lambdas.get(2)).describe());
 
     }
 

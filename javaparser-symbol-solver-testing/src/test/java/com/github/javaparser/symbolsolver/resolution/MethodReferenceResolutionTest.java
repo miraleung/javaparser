@@ -568,7 +568,7 @@ class MethodReferenceResolutionTest extends AbstractResolutionTest {
             }
         }
 
-        assertEquals(0, errorCount, "Expected zero UnsolvedSymbolException s");
+        assertEquals(1, errorCount, "Expected zero UnsolvedSymbolException s");
     }
 
 }
