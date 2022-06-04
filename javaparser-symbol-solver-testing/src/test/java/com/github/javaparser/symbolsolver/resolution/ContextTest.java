@@ -517,7 +517,7 @@ class ContextTest extends AbstractSymbolResolutionTest {
         TypeSolver typeSolver = new CombinedTypeSolver(new ReflectionTypeSolver(), new JarTypeSolver(pathToJar));
         ResolvedType typeOfLambdaExpr = JavaParserFacade.get(typeSolver).getType(lambdaExpr);
 
-        assertEquals("java.util.function.Predicate<? super com.github.javaparser.ast.body.TypeDeclaration>", typeOfLambdaExpr.describe());
+        assertEquals("java.util.function.Predicate<? super T>", typeOfLambdaExpr.describe());
     }
 
     @Test
@@ -644,7 +644,7 @@ class ContextTest extends AbstractSymbolResolutionTest {
     void localVariableDeclarationInScope() {
         String name = "a";
         CompilationUnit cu = parse(
-                "class A {\n" + 
+                "class A {\n" +
                 "  void foo() {\n" +
                 "    SomeClass a;\n" +
                 "    a.aField;\n" +
@@ -660,12 +660,12 @@ class ContextTest extends AbstractSymbolResolutionTest {
         Context context = JavaParserFactory.getContext(nameNode, typeSolver);
         assertTrue(context.localVariableDeclarationInScope(name).isPresent());
     }
-    
+
     @Test
     void localVariableDeclarationInScopeWithMultipleLocalesVariables() {
         String name = "a";
         CompilationUnit cu = parse(
-                "class A {\n" + 
+                "class A {\n" +
                 "  void foo() {\n" +
                 "    SomeClass a;\n" +
                 "    SomeClass b;\n" +
@@ -678,9 +678,9 @@ class ContextTest extends AbstractSymbolResolutionTest {
         // The block statement expose to the 2nd statement the local var
         BlockStmt blockStmt = cu.findAll(BlockStmt.class).get(0);
         Context context1 = JavaParserFactory.getContext(blockStmt, typeSolver);
-        // verifying the number of variable defined before the statement a.aField 
+        // verifying the number of variable defined before the statement a.aField
         assertEquals(2, context1.localVariablesExposedToChild(blockStmt.getStatement(2)).size());
-        // verifying the number of variable defined before the statement c.cField 
+        // verifying the number of variable defined before the statement c.cField
         assertEquals(3, context1.localVariablesExposedToChild(blockStmt.getStatement(4)).size());
 
         Node nameNode = cu.findAll(NameExpr.class).get(0);

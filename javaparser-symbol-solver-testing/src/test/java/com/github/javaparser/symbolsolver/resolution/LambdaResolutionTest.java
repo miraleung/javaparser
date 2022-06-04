@@ -48,7 +48,7 @@ class LambdaResolutionTest extends AbstractResolutionTest {
 
         JavaParserFacade javaParserFacade = JavaParserFacade.get(new ReflectionTypeSolver());
         ResolvedType type = javaParserFacade.getType(expression);
-        assertEquals("java.util.function.Function<? super java.lang.String, ? extends java.lang.String>", type.describe());
+        assertEquals("java.util.function.Function<? super T, ? extends java.lang.String>", type.describe());
     }
 
     @Test
@@ -187,7 +187,7 @@ class LambdaResolutionTest extends AbstractResolutionTest {
 
         JavaParserFacade javaParserFacade = JavaParserFacade.get(new ReflectionTypeSolver());
         ResolvedType type = javaParserFacade.getType(lambdaExpr);
-        assertEquals("java.util.function.Consumer<? super java.lang.String>", type.describe());
+        assertEquals("java.util.function.Consumer<? super T>", type.describe());
     }
 
 
