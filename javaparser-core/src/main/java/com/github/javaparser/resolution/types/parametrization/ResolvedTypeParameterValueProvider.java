@@ -53,14 +53,16 @@ public interface ResolvedTypeParameterValueProvider {
             }
         }
 
-        if (type.isWildcard() && type.asWildcard().isBounded()) {
+        // Condition prevents infinite loops upon encountering a parameter
+        // like this one:
+        // ConsumerRaisingIOE<T> andThen(ConsumerRaisingIOE<? super T> next) { }
+        if (type.isWildcard()
+            && type.asWildcard().isBounded()
+            && !(type instanceof ResolvedWildcard
+              && ((ResolvedWildcard) type).getBoundedType().equals(type.asWildcard().getBoundedType()))) {
             if (type.asWildcard().isExtends()) {
                 return ResolvedWildcard.extendsBound(useThisTypeParametersOnTheGivenType(type.asWildcard().getBoundedType()));
-            } else if (!(type instanceof ResolvedWildcard
-                && ((ResolvedWildcard) type).getBoundedType().equals(type.asWildcard().getBoundedType()))) {
-                // Condition prevents infinite loops upon encountering a parameter
-                // like this one:
-                // ConsumerRaisingIOE<T> andThen(ConsumerRaisingIOE<? super T> next) { }
+            } else {
                 return ResolvedWildcard.superBound(useThisTypeParametersOnTheGivenType(type.asWildcard().getBoundedType()));
             }
         }
